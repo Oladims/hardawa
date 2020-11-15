@@ -22,12 +22,12 @@
       crossorigin="anonymous"
     />
     <script src="https://unpkg.com/feather-icons"></script>
-    <title>Users</title>
+    <title>HARDAWA- Roles</title>
   </head>
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">HARDAWA</a>
+      <a class="navbar-brand" href="/index.html">HARDAWA</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -43,7 +43,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">Users</a>
+            <a class="nav-link" href="/users.html">Users</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="dashboard.html">Dashboard</a>
@@ -53,9 +53,9 @@
               >Roles <span class="sr-only">(current)</span></a
             >
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="#">Link</a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </nav>
@@ -80,8 +80,8 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <form class="form-signin">
+          <form class="form-signin">
+            <div class="modal-body">
               <label for="inputFirstName" class="sr-only">Role Name</label>
               <input
                 type="text"
@@ -100,18 +100,20 @@
                 required=""
                 autofocus=""
               /> -->
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="submit" id="addRolesBtn" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -183,7 +185,7 @@
       </div>
       <div class="row">
         <div class="col-sm-4">
-          <div class="card">
+          <div class="card bg-dark text-white">
             <div class="card-body">
               <div class="d-flex justify-content-between">
                 <h5 class="card-title">Super Admin</h5>
@@ -224,6 +226,38 @@
 
     <script>
       feather.replace();
+      let roleName = document.querySelector("#inputRoleName").value;
+      let addRolesBtn = document.querySelector("#addRolesBtn");
+      console.log(roleName);
+
+
+      const uploadUrl = "http://hadawa.azurewebsites.net/api/Roles/AddRole";
+      const payload = { roleName };
+      async function postData(url = "", data = {}) {
+        // Default options are marked with *
+        const response = await fetch(url, {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          mode: "no-cors", // no-cors, *cors, same-origin
+          // cache: "default", // *default, no-cache, reload, force-cache, only-if-cached
+          // credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          // redirect: "follow", // manual, *follow, error
+          // referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          body: JSON.stringify(data), // body data type must match "Content-Type" header
+        });
+        return response.json(); // parses JSON response into native JavaScript objects
+      }
+
+      addRolesBtn.addEventListener(
+        "onClick",
+        postData(uploadUrl, payload).then((data) => {
+          console(payload);
+          console.log(data); // JSON data parsed by `data.json()` call
+        })
+      );
     </script>
     <!-- Option 2: jQuery, Popper.js, and Bootstrap JS
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
